@@ -55,7 +55,7 @@ def main(args):
 
   save_ckpt = [
       tf.keras.callbacks.ModelCheckpoint(
-          filepath=f"./ckpt/{EXPERIMENT_NAME}_" + "{epoch}",
+          filepath=f"./ckpt/{EXPERIMENT_NAME}_" + "{epoch}.weights.h5",
           save_best_only=True,
           monitor="val_loss",
           save_weights_only=True
@@ -71,7 +71,7 @@ def main(args):
       validation_data=test_ds,
   )
 
-  model.save_weights(f"{EXPERIMENT_NAME}_" + f"{args.epochs}")
+  model.save_weights(f"{EXPERIMENT_NAME}_" + f"{args.epochs}.weights.h5")
 
 
 def prepare_dataset():
