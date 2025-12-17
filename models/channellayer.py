@@ -145,16 +145,9 @@ class SatelliteChannel(tf.keras.layers.Layer):
         
         # Flattened lookup tables could be optimizing, but dictionary lookup is fast enough for low freq
         # We will handle parameter retrieval dynamically in call
-    def build(self, input_shape):
-        # Create state variable here to ensure it is placed on the same device as the layer (GPU)
-        self.current_state = self.add_weight(
-            name="markov_state",
-            shape=[self.max_batch_size],
-            dtype=tf.int32,
-            initializer=tf.keras.initializers.Zeros(),
-            trainable=False
-        )
-        super().build(input_shape)
+    # build() removed - no persistent state variable needed
+    # Stateless implementation avoids CPU/GPU placement issues on Colab
+
     
     def _get_params(self, training):
         # Default behavior: Random LEO/GEO for training, Fixed LEO for inference
@@ -194,26 +187,30 @@ class SatelliteChannel(tf.keras.layers.Layer):
         p_matrix_np = P_MATRICES[env][el]
         p_matrix = tf.constant(p_matrix_np, dtype=tf.float32) # (3, 3)
         
-        # Get current states for the batch
-        # We use a slice of the persistent state variable
-        # Note: If batch_size > max_batch_size, this will fail. 
-        # Typically max_batch_size should be set high enough.
-        # Fallback: wrap or clip? For now assume batch_size <= max.
+        # Stateless Approach:
+        # Instead of carrying state over batches (which causes device placement issues with Keras 3 on Colab),
+        # we generate a random current state distribution and simulate one step.
+        # Since batches are shuffled, "memory" between batches is not physically meaningful anyway.
         
-        curr_states = self.current_state[:batch_size] # (B,)
+        # 1. Generate random current states (0=LOS, 1=Shadow, 2=Deep)
+        # We assume a rough prior distribution or just uniform for robustness
+        # Let's say: 50% LOS, 30% Shadow, 20% Deep as a generic prior to transition FROM.
+        # functional_curr_states = tf.random.categorical(tf.math.log([[0.5, 0.3, 0.2]]), batch_size, dtype=tf.int32)
+        # functional_curr_states = tf.reshape(functional_curr_states, [batch_size])
         
-        # Gather probabilities for the next transition based on current state
-        # transitions[i] = p_matrix[curr_states[i]] -> (B, 3)
-        transition_probs = tf.gather(p_matrix, curr_states) 
+        # ACTUALLY: Let's just pick a random start state uniform per sample. 
+        # The transition matrix will then guide it to the "next" state which we use.
+        functional_curr_states = tf.random.uniform([batch_size], minval=0, maxval=3, dtype=tf.int32)
+
+        # Gather probabilities for the next transition based on this random current state
+        transition_probs = tf.gather(p_matrix, functional_curr_states) 
         
         # Sample next state
-        # tf.random.categorical takes log-probs
-        # Shape output: (B, 1)
         next_states = tf.random.categorical(tf.math.log(transition_probs + 1e-9), 1, dtype=tf.int32)
         next_states = tf.reshape(next_states, [batch_size])
         
-        # Update persistent state
-        self.current_state[:batch_size].assign(next_states)
+        # No persistent update needed
+        # self.current_state[:batch_size].assign(next_states)
         
         # --- 3. Generate Fading Coefficients (Loo Distribution) ---
         
