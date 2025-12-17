@@ -47,7 +47,7 @@ def main(args):
       ]
   )
 
-  model.build(input_shape=(None, 32, 32, 3))
+  model(tf.zeros([1, 32, 32, 3]))
   model.summary()
   
   if args.ckpt is not None:
