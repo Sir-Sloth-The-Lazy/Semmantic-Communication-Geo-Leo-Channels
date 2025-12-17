@@ -47,7 +47,7 @@ def dataset_generator(dir, mode=None, shuffle=True):
                 labels='inferred',
                 color_mode='rgb',
                 batch_size=BATCH_SIZE,
-                image_size=(32, 32), # Forces resize of any input to 32x32
+                image_size=(32, 32), 
                 shuffle=shuffle,
                 interpolation='bilinear'
             )
