@@ -58,10 +58,7 @@ def main(args):
           filepath=f"./ckpt/{EXPERIMENT_NAME}_" + "{epoch}",
           save_best_only=True,
           monitor="val_loss",
-          save_weights_only=True,
-          options=tf.train.CheckpointOptions(
-              experimental_io_device=None, experimental_enable_async_checkpoint=True
-          )
+          save_weights_only=True
       )
   ]
 
