@@ -47,8 +47,7 @@ def main(args):
       ]
   )
 
-  model(tf.zeros([1, 32, 32, 3]))
-  model.summary()
+  # model.summary() removed to prevent CPU/GPU placement conflicts
   
   if args.ckpt is not None:
     model.load_weights(args.ckpt)
