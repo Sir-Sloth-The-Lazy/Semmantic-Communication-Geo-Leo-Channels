@@ -113,7 +113,7 @@ if __name__ == "__main__":
   parser.add_argument('data_size', type=int, help='total number of complex symbols sent'),
   parser.add_argument('channel_types', type=str, help='channel types. Rayleigh, AWGN, Rician, Satellite, GEO, LEO, or None'),
   parser.add_argument('train_snrdB', type=int, help='train snr (in dB)'),
-  parser.add_argument('block_types', type=str, help='Type of the each block (in a String, total 7). C for conv, V for ViT e.g,. CCVVVCC')
+  parser.add_argument('block_types', type=str, help='Type of the each block (in a String, total 6). C for conv, V for ViT e.g,. CCVVCC')
   parser.add_argument('experiment_name',
                       type=str,
                       help='experiment name (used for ckpt & logs)')
