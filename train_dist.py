@@ -82,10 +82,10 @@ def prepare_dataset():
   test_ds = dataset_generator('/dataset/CIFAR10/test/')
   train_ds = dataset_generator('/dataset/CIFAR10/train/').cache()
 
-  normalize = tf.keras.layers.experimental.preprocessing.Rescaling(1./255)
+  normalize = tf.keras.layers.Rescaling(1./255)
   augment_layer = tf.keras.Sequential([
-        tf.keras.layers.experimental.preprocessing.Rescaling(1./255),
-        tf.keras.layers.experimental.preprocessing.RandomFlip("horizontal"),
+        tf.keras.layers.Rescaling(1./255),
+        tf.keras.layers.RandomFlip("horizontal"),
     ])
 
   def normalize_and_augment(image, training):
