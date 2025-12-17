@@ -141,16 +141,20 @@ class SatelliteChannel(tf.keras.layers.Layer):
         self.max_batch_size = max_batch_size
         self.snr = 10 ** (snrdB / 10) # in dB
         # State: 0=S1_LOS, 1=S2_SHADOW, 2=S3_DEEP_SHADOW
-        # Initialize with 0 (LOS)
-        self.current_state = tf.Variable(
-            tf.zeros([max_batch_size], dtype=tf.int32),
-            trainable=False,
-            name="markov_state"
-        )
+        # Initialized in build() to ensure correct device placement
         
         # Flattened lookup tables could be optimizing, but dictionary lookup is fast enough for low freq
         # We will handle parameter retrieval dynamically in call
-
+    def build(self, input_shape):
+        # Create state variable here to ensure it is placed on the same device as the layer (GPU)
+        self.current_state = self.add_weight(
+            name="markov_state",
+            shape=[self.max_batch_size],
+            dtype=tf.int32,
+            initializer=tf.keras.initializers.Zeros(),
+            trainable=False
+        )
+        super().build(input_shape)
     
     def _get_params(self, training):
         # Default behavior: Random LEO/GEO for training, Fixed LEO for inference
