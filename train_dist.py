@@ -39,7 +39,7 @@ def main(args):
   # )
   model.compile(
       loss='mse',
-      optimizer=tf.keras.optimizers.legacy.Adam(
+      optimizer=tf.keras.optimizers.Adam(
           learning_rate=1e-4
       ),
       metrics=[
