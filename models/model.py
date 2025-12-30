@@ -9,7 +9,7 @@ from models.channellayer import RayleighChannel, AWGNChannel, RicianChannel, Sat
 from models.metrics import psnr, ssim
 from models.vitblock import VitBlock
 
-# Modified from DeepJSCC codes (https://github.com/kurka/deepJSCC-feedback/blob/master/jscc.py)
+
 
 class SemViT(tf.keras.Model):
     def __init__(self, block_types, filters, num_blocks, has_gdn=True,
