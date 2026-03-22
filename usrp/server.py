@@ -22,8 +22,8 @@ from config.usrp_config import NORMALIZE_CONSTANT, TEMP_DIRECTORY
 from usrp.pilot import PILOT_SIZE
 
 ARCH = 'CCVVCC'
-NUM_SYMBOLS = 512
-CKPT_NAME = '../bkup_ckpt/best/awgn/CCVVCC_512_10dB_599'
+NUM_SYMBOLS = 2048
+CKPT_NAME = '../bkup_ckpt/best/awgn/CCVVCC_512_10dB_599' #fix for yourself
 TARGET_JPEG_RATE = 2048
 
 encoder_network = SemViT_Encoder_Only(
