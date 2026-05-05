@@ -1,4 +1,4 @@
-# Semantic Communications with Vision Transformer - User Guide
+# Semantic Communications with Vision Transformer and CNNs- User Guide
 
 ![Python](https://img.shields.io/badge/Python-3.10-3776AB?style=flat&logo=python&logoColor=white)
 ![TensorFlow](https://img.shields.io/badge/TensorFlow-2.11-FF6F00?style=flat&logo=tensorflow&logoColor=white)
