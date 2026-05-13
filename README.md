@@ -13,7 +13,7 @@
 
 This repository implements a Deep Joint Source-Channel Coding (JSCC) system using Vision Transformers (ViT) for semantic communications. It supports various channel models (AWGN, Rayleigh, Satellite, etc.) and hardware implementation via USRP.
 
-We use CNNs as local receptive fields to capture local information and later in the pipeline we use ViT for global information and semantic compression. 
+We use CNNs as local receptive fields to capture local information and later in the pipeline we use ViT for global information and semantic compression as well as channel coding. 
 
 <p align="center">
   <img src="image.png" alt="High Level Framework of the System">
